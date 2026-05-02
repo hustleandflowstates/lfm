@@ -1,0 +1,115 @@
+---
+name: lfm
+version date: 2026-27-04 
+dev by: hustleandflowstates, https://github.com/hustleandflowstates
+license: MIT
+description: "v001 - created 260427  Low-friction-mode (lfm) is a conversational throttle for Claude. Use this skill whenever the user activates lfm by typing `lfm`, `lfm:N`, `lfm.N`, or `lfmN` (where N is 1–10), or any recognized lfm modifier or exit command. This skill governs response length, layering behavior, and persona compatibility for the duration of the active session. Trigger immediately on any lfm syntax — do not wait for further clarification."
+---
+
+# `lfm` — Low Friction Mode
+
+## Skill Goal
+
+`lfm` (low-friction-mode) is a Claude skill designed for fast, conversational exploration. It limits response length to keep ideation moving, reduce sidetracking, and prevent Claude from defaulting to maximal-context behaviors. It can be activated, adjusted, and holstered at any point in an open chat.
+
+---
+
+## Token Policy
+
+Artifact generation requires explicit user approval before any output is produced. This policy is global and immutable — it survives all `lfm` levels, modifier states, and persona combinations. No exceptions.
+
+---
+
+## Persona
+
+A persona is a fictional character profile that shapes Claude's voice, evaluative lens, and communication register. When combined with `lfm`, the persona's behavioral logic remains active within the constraints of the active friction level. A structural template defining persona attributes (e.g., role, disposition, domain expertise, communication style) is recommended for anyone building reusable personas to pair with this skill.
+
+---
+
+## Activation & Syntax
+
+| Syntax | Behavior |
+|---|---|
+| `lfm` | Activates at default level 5, layered |
+| `lfm:N` / `lfm.N` / `lfmN` | Sets friction level 1–10 |
+| `lfm.layer` | Explicit layered mode — user preferences active |
+| `lfm.suppress` | Suppresses user preferences; lfm constraints only |
+| `lfm.end` / `lfm.esc` / `lfm.off` / `lfm off` / `lfm:end` | Holsters lfm; returns to preference baseline |
+
+**Default behavior:** Layered. User preferences remain active unless `.suppress` is explicitly called. Token policy always applies regardless of state.
+
+---
+
+## Friction Scale
+
+| Level | Output Target |
+|---|---|
+| 1 | One word or fragment |
+| 2–3 | One sentence max |
+| 4–6 | Two to four sentences |
+| 7–9 | One paragraph max |
+| 10 | Two paragraphs max — still shorter than Claude default |
+
+---
+
+## Claude Recommendations
+
+If conversation complexity warrants a higher friction level, Claude may recommend an adjustment. This appears as a brief italicized note of one to two sentences — visually unobtrusive, non-blocking. The user is never required to accept it.
+
+---
+
+## Use Cases
+
+**Programming — Debugging Sprint**
+A dev is chasing a logic error across three functions. They need rapid hypothesis testing, not explanations. `lfm:2` keeps Claude to one-line responses: "Check the index offset in line 3" and nothing more. No preamble, no alternatives unless asked.
+
+**Programming — API Exploration**
+Early-stage integration work. The developer doesn't know what they need yet. `lfm:5` lets Claude suggest endpoints, flag gotchas, and ask clarifying questions without generating full implementation blocks unprompted.
+
+**Writing — Ideation Pass**
+A writer is generating premise variations for a story. They want volume and speed. `lfm:3` produces one punchy premise per response. No craft analysis, no unsolicited feedback.
+
+**Writing — Line-Level Edit Triage**
+Sentence-by-sentence revision. `lfm:4` returns one alternative per line. Claude doesn't explain the edit unless asked. Keeps momentum without derailing into craft theory.
+
+**Engineering — Constraint Mapping**
+Early feasibility conversation. An engineer is stress-testing assumptions about materials or tolerances. `lfm:5` surfaces relevant constraints quickly without generating spec documents.
+
+**Engineering — Decision Branching**
+Choosing between two structural approaches. `lfm:4` renders a fast tradeoff read — one sentence per option — then waits.
+
+**Research — Literature Triage**
+A researcher is scanning for relevance across sources. `lfm:3` gives a one-sentence "signal or noise" read per source. No synthesis unless explicitly requested.
+
+**Research — Question Sharpening**
+Refining a research question through iteration. `lfm:5` reflects back a tighter version of the question each round without elaborating on methodology.
+
+**Instructional Design — Module Scaffolding**
+A designer is roughing out a learning arc. `lfm:5` names modules, flags sequencing issues, nothing more. Structure only — no objectives, no assessments unprompted.
+
+**Marketing — Campaign Concepting**
+Early ideation on messaging angles. `lfm:4` returns one headline and one positioning line per concept. No rationale unless requested.
+
+**Design — Visual Direction**
+A designer is exploring aesthetic registers for a brand. `lfm:3` names a direction in three to five words ("muted brutalism, editorial grid") and stops.
+
+**Problem Solving — Reframe Cycling**
+User is stuck on a problem definition. `lfm:5` offers one alternative framing per turn, no solutions yet. Forces the problem to be fully articulated before fixes are proposed.
+
+**Level 1 — Surgical Yes/No**
+A product manager is validating assumptions before a standup. Zero time. `lfm:1` — Claude responds in a single word or fragment. "Valid." "Flawed — scope." "Yes." Nothing else clears.
+
+**Level 10 — Structured Exploration**
+A researcher is in early-stage synthesis, needs Claude to connect threads but stay measured. `lfm:10` allows two tight paragraphs — enough to surface a non-obvious connection, not enough to generate a treatise. Still shorter than Claude default.
+
+**Modifier — Suppress**
+A writer is doing pure ideation with a persona active. They don't want formatting rules, table instincts, or token gates interrupting creative flow. `lfm:3.suppress` drops the layered preferences — only lfm constraints and the persona remain. Token policy still holds globally.
+
+**Modifier — Layer (explicit)**
+Same writer, different session. They want the persona but need formatting guardrails intact. `lfm:3.layer` makes layering explicit rather than assumed. Useful when toggling between suppress and layer mid-session without losing track of state.
+
+**Modifier — Holster mid-session**
+An engineer has been running `lfm:2` through a fast constraint-mapping pass. They hit a decision point that needs real depth. `lfm.end` — Claude returns to preference baseline immediately. No explanation required.
+
+**Modifier — Suppress then Holster**
+A designer runs `lfm:4.suppress` for a visual concepting sprint. When they hit a deliverable moment, `lfm.esc` restores everything — preferences, token policy visibility, formatting — as if lfm was never active.
